@@ -38,7 +38,7 @@ public class PrimeNumbersService extends BaseService {
         ResultModel model = getResultModelById(Integer.parseInt(valueId));
 
         if (model == null) {
-            throw new BadRequestException(new ErrorInfoModel(Response.Status.NOT_FOUND.getStatusCode(),
+            throw new NotFoundException(new ErrorInfoModel(Response.Status.NOT_FOUND.getStatusCode(),
                     Response.Status.NOT_FOUND.getReasonPhrase()));
         }
 
