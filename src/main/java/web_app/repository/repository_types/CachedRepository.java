@@ -1,6 +1,7 @@
 package web_app.repository.repository_types;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import web_app.repository.cache.cache_connectors.CacheConnector;
@@ -43,6 +44,7 @@ public class CachedRepository implements Repository {
         }
     }
 
+    @Nullable
     @Override
     public List<ResultModel> getResultByValue (String value) {
         List<ResultModel> resultModels = null;
@@ -77,6 +79,7 @@ public class CachedRepository implements Repository {
         return resultModels;
     }
 
+    @Nullable
     @Override
     public ResultModel getResultById(int id) {
         ResultModel resultModel = null;

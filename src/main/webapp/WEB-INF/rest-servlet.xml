@@ -22,7 +22,10 @@
 
     <bean id="primeNumbersService" class="web_app.services.PrimeNumbersService" init-method="init" />
 
-    <bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+    <bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+    <bean id="notFoundProvider" class="web_app.services.mappers.NotFoundExceptionMapper" />
+    <bean id="badRequestProvider" class="web_app.services.mappers.BadRequestExceptionMapper" />
+    <bean id="serverErrorProvider" class="web_app.services.mappers.InternalServerExceptionMapper" />
 
     <jaxrs:server id="primeNumbersServices" address="/services">
         <jaxrs:serviceBeans>
@@ -30,7 +33,10 @@
         </jaxrs:serviceBeans>
 
         <jaxrs:providers>
-            <ref bean='jsonProvider' />
+            <ref bean="jsonProvider" />
+            <ref bean="notFoundProvider" />
+            <ref bean="badRequestProvider" />
+            <ref bean="serverErrorProvider" />
         </jaxrs:providers>
     </jaxrs:server>
 

@@ -2,7 +2,9 @@ package web_app.common;
 
 import org.ini4j.Ini;
 import org.ini4j.Profile;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Properties;
@@ -11,8 +13,9 @@ public class Utils {
 
     private Utils() {}
 
-    public static boolean isInteger(@NotNull String string) {
-        return string.matches("^\\d+$");
+    @Contract(value = "null -> false", pure = true)
+    public static boolean isInteger(@Nullable String string) {
+        return string != null && string.matches("^\\d+$");
     }
 
     public static String numbersListToString(@NotNull List<Integer> numbers, String separator) {
