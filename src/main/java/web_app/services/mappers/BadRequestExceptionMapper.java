@@ -1,5 +1,6 @@
 package web_app.services.mappers;
 
+import org.jetbrains.annotations.NotNull;
 import web_app.services.exceptions.BadRequestException;
 
 import javax.ws.rs.Produces;
@@ -13,8 +14,8 @@ public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestExce
 
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public Response toResponse(BadRequestException e) {
+    public Response toResponse(@NotNull BadRequestException e) {
 
-        return Response.status(Response.Status.BAD_REQUEST).entity(e.getErrorInfo()).build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(e.getBaseResponseModel()).build();
     }
 }

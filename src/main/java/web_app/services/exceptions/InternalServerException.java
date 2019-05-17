@@ -1,11 +1,8 @@
 package web_app.services.exceptions;
 
-import org.jetbrains.annotations.NotNull;
-import web_app.services.models.ErrorInfoModel;
+import web_app.services.models.BaseResponseModel;
 
-public class InternalServerException extends Exception {
-
-    private ErrorInfoModel errorInfo;
+public class InternalServerException extends BaseException {
 
     public InternalServerException() { super(); }
 
@@ -15,13 +12,19 @@ public class InternalServerException extends Exception {
 
     public InternalServerException(String what, Throwable throwable) { super(what, throwable); }
 
-    public InternalServerException(@NotNull ErrorInfoModel errorInfo) {
-        this(errorInfo.getMessage());
-
-        this.errorInfo = errorInfo;
+    public InternalServerException(BaseResponseModel baseResponseModel) {
+        super(baseResponseModel);
     }
 
-    public ErrorInfoModel getErrorInfo() {
-        return errorInfo;
+    public InternalServerException(String what, BaseResponseModel baseResponseModel) {
+        super(what, baseResponseModel);
+    }
+
+    public InternalServerException(Throwable throwable, BaseResponseModel baseResponseModel) {
+        super(throwable, baseResponseModel);
+    }
+
+    public InternalServerException(String what, Throwable throwable, BaseResponseModel baseResponseModel) {
+        super(what, throwable, baseResponseModel);
     }
 }

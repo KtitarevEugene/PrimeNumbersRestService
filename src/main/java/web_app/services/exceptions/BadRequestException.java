@@ -1,11 +1,8 @@
 package web_app.services.exceptions;
 
-import org.jetbrains.annotations.NotNull;
-import web_app.services.models.ErrorInfoModel;
+import web_app.services.models.BaseResponseModel;
 
-public class BadRequestException extends Exception {
-
-    private ErrorInfoModel errorInfo;
+public class BadRequestException extends BaseException {
 
     public BadRequestException() { super(); }
 
@@ -15,13 +12,19 @@ public class BadRequestException extends Exception {
 
     public BadRequestException(String what, Throwable throwable) { super(what, throwable); }
 
-    public BadRequestException(@NotNull ErrorInfoModel errorInfo) {
-        this(errorInfo.getMessage());
-
-        this.errorInfo = errorInfo;
+    public BadRequestException(BaseResponseModel baseResponseModel) {
+        super(baseResponseModel);
     }
 
-    public ErrorInfoModel getErrorInfo() {
-        return errorInfo;
+    public BadRequestException(String what, BaseResponseModel baseResponseModel) {
+        super(what, baseResponseModel);
+    }
+
+    public BadRequestException(Throwable throwable, BaseResponseModel baseResponseModel) {
+        super(throwable, baseResponseModel);
+    }
+
+    public BadRequestException(String what, Throwable throwable, BaseResponseModel baseResponseModel) {
+        super(what, throwable, baseResponseModel);
     }
 }

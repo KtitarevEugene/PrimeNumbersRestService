@@ -1,15 +1,8 @@
 package web_app.services.exceptions;
 
-import org.jetbrains.annotations.NotNull;
-import web_app.services.models.ErrorInfoModel;
+import web_app.services.models.BaseResponseModel;
 
-import java.io.Serializable;
-
-public class NotFoundException extends Exception implements Serializable {
-
-    private static final long serialVersionUID = 4849603993673454597L;
-
-    private ErrorInfoModel errorInfo;
+public class NotFoundException extends BaseException {
 
     public NotFoundException() { super(); }
 
@@ -19,13 +12,19 @@ public class NotFoundException extends Exception implements Serializable {
 
     public NotFoundException(String what, Throwable cause) { super(what, cause); }
 
-    public NotFoundException(@NotNull ErrorInfoModel errorInfo) {
-        this(errorInfo.getMessage());
-
-        this.errorInfo = errorInfo;
+    public NotFoundException(BaseResponseModel baseResponseModel) {
+        super(baseResponseModel);
     }
 
-    public ErrorInfoModel getErrorInfo() {
-        return errorInfo;
+    public NotFoundException(String what, BaseResponseModel baseResponseModel) {
+        super(what, baseResponseModel);
+    }
+
+    public NotFoundException(Throwable throwable, BaseResponseModel baseResponseModel) {
+        super(throwable, baseResponseModel);
+    }
+
+    public NotFoundException(String what, Throwable throwable, BaseResponseModel baseResponseModel) {
+        super(what, throwable, baseResponseModel);
     }
 }

@@ -12,6 +12,6 @@ public class InternalServerExceptionMapper implements ExceptionMapper<InternalSe
 
     @Override
     public Response toResponse(@NotNull InternalServerException e) {
-        return Response.serverError().entity(e.getErrorInfo()).build();
+        return Response.serverError().entity(e.getBaseResponseModel()).build();
     }
 }

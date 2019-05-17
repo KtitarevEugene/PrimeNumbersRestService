@@ -16,6 +16,6 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
     @Override
     public Response toResponse(@NotNull NotFoundException e) {
 
-        return Response.status(Response.Status.NOT_FOUND).entity(e.getErrorInfo()).build();
+        return Response.status(Response.Status.NOT_FOUND).entity(e.getBaseResponseModel()).build();
     }
 }

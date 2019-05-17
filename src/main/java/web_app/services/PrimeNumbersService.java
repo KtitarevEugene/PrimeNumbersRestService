@@ -11,7 +11,8 @@ import web_app.repository.db.db_models.ResultModel;
 import web_app.services.exceptions.BadRequestException;
 import web_app.services.exceptions.InternalServerException;
 import web_app.services.exceptions.NotFoundException;
-import web_app.services.models.ErrorInfoModel;
+import web_app.services.models.ResultResponseModel;
+import web_app.services.models.SendResponseModel;
 import web_app.services.models.ValueModel;
 import web_app.services.models.ValueResultModel;
 
@@ -31,22 +32,25 @@ public class PrimeNumbersService extends BaseService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getResult(@PathParam("valueId") String valueId) throws NotFoundException, BadRequestException {
         if (!Utils.isInteger(valueId)) {
-            throw new BadRequestException(new ErrorInfoModel(Response.Status.BAD_REQUEST.getStatusCode(),
+            throw new BadRequestException(new ResultResponseModel(Response.Status.BAD_REQUEST.getStatusCode(),
                     Response.Status.BAD_REQUEST.getReasonPhrase()));
         }
 
         ResultModel model = getResultModelById(Integer.parseInt(valueId));
 
         if (model == null) {
-            throw new NotFoundException(new ErrorInfoModel(Response.Status.NOT_FOUND.getStatusCode(),
+            throw new NotFoundException(new ResultResponseModel(Response.Status.NOT_FOUND.getStatusCode(),
                     Response.Status.NOT_FOUND.getReasonPhrase()));
         }
 
         return Response.ok().entity(
-                new ValueResultModel(
-                        model.getId(),
-                        Integer.parseInt(model.getValue()),
-                        model.getPrimeNumbers()))
+                new ResultResponseModel(
+                        Response.Status.OK.getStatusCode(),
+                        Response.Status.OK.getReasonPhrase(),
+                        new ValueResultModel(
+                                model.getId(),
+                                Integer.parseInt(model.getValue()),
+                                model.getPrimeNumbers())))
                 .build();
     }
 
@@ -54,12 +58,12 @@ public class PrimeNumbersService extends BaseService {
         return dataRepository.getResultById(id);
     }
 
-    @GET
+    @PUT
     @Path("/send/{value}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response sendNumber(@PathParam("value") String value) throws BadRequestException, InternalServerException {
         if (!Utils.isInteger(value)) {
-            throw new BadRequestException(new ErrorInfoModel(Response.Status.BAD_REQUEST.getStatusCode(),
+            throw new BadRequestException(new SendResponseModel(Response.Status.BAD_REQUEST.getStatusCode(),
                     Response.Status.BAD_REQUEST.getReasonPhrase()));
         }
 
@@ -73,9 +77,12 @@ public class PrimeNumbersService extends BaseService {
                 }
 
                 return Response.ok().entity(
-                        new ValueModel(
-                                resultModels.get(0).getId(),
-                                Integer.parseInt(value)))
+                        new SendResponseModel(
+                                Response.Status.OK.getStatusCode(),
+                                Response.Status.OK.getReasonPhrase(),
+                                new ValueModel(
+                                        resultModels.get(0).getId(),
+                                        Integer.parseInt(value))))
                         .build();
 
             }
@@ -84,15 +91,18 @@ public class PrimeNumbersService extends BaseService {
 
             sendResultMessage(valueId);
 
-            return Response.ok().entity(
-                    new ValueModel(
-                            valueId,
-                            Integer.parseInt(value)))
+            return Response.status(Response.Status.ACCEPTED).entity(
+                    new SendResponseModel(
+                            Response.Status.ACCEPTED.getStatusCode(),
+                            Response.Status.ACCEPTED.getReasonPhrase(),
+                            new ValueModel(
+                                    valueId,
+                                    Integer.parseInt(value))))
                     .build();
 
         } catch (Exception e) {
             logger.error("Exception has been thrown.", e);
-            throw new InternalServerException(new ErrorInfoModel(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
+            throw new InternalServerException(new SendResponseModel(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
                     e.getMessage()));
         }
     }
